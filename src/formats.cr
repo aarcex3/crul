@@ -209,12 +209,10 @@ module Crul
               print_end_open_element empty
             when ::XML::Reader::Type::END_ELEMENT
               parent = current.parent
-              if parent
-                print_close_element current.name
-                current = parent
-              else
-                raise "Invalid end element"
-              end
+              raise "Invalid end element" unless parent
+
+              print_close_element current.name
+              current = parent
             when ::XML::Reader::Type::TEXT
               print_text @reader.value
             when ::XML::Reader::Type::COMMENT
