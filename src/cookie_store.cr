@@ -17,26 +17,24 @@ module Crul
     end
 
     def add_to_headers(host, port, headers)
-      if cookies_for_host = cookies["#{host}:#{port}"]?
-        cookies_for_host.each do |name, cookie|
-          headers["Cookie"] = cookie
-        end
+      return unless cookies_for_host = cookies["#{host}:#{port}"]?
+      cookies_for_host.each do |_, cookie|
+        headers["Cookie"] = cookie
       end
     end
 
     def store_cookies(host, port, headers)
-      if cookie_header = headers["Set-Cookie"]?
-        cookies["#{host}:#{port}"] ||= {} of String => String
-        cookies["#{host}:#{port}"][cookie_name(cookie_header)] = cookie_header
-      end
+      return unless cookie_header = headers["Set-Cookie"]?
+
+      cookies["#{host}:#{port}"] ||= {} of String => String
+      cookies["#{host}:#{port}"][cookie_name(cookie_header)] = cookie_header
     end
 
     def write!
-      if filename = @filename
-        json = cookies.to_json
-        Dir.mkdir_p(File.dirname(filename))
-        File.write(filename, json)
-      end
+      return unless filename = @filename
+      json = cookies.to_json
+      Dir.mkdir_p(File.dirname(filename))
+      File.write(filename, json)
     end
 
     private def cookie_name(cookie_header)

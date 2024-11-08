@@ -10,7 +10,7 @@ test:
 	crystal spec -v -p -t --color
 
 # Run linter with style and lint checks only
-check-lint:
+lint:
 	./bin/ameba --only Style,Lint
 
 # Format the code using crystal tool

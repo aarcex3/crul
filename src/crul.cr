@@ -1,8 +1,3 @@
-# require "./formatters/auto.cr"
-# require "./formatters/json.cr"
-# require "./formatters/plain.cr"
-# require "./formatters/xml.cr"
-
 # require "./cli.cr"
 # require "./command.cr"
 require "./cookie_store.cr"

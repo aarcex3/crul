@@ -90,12 +90,10 @@ module Crul
     end
 
     private def self.load_body_from_file(filename : String, options : Options) : String?
-      begin
-        File.read(filename: filename)
-      rescue e
-        options.errors << e
-        nil
-      end
+      File.read(filename: filename)
+    rescue e
+      options.errors << e
+      nil
     end
   end
 end
