@@ -1,0 +1,13 @@
+name: crul
+version: 0.1.0
+
+authors:
+  - Agustin Arce <agustinarceprincich@gmail.com>
+
+development_dependencies:
+  ameba:
+    github: crystal-ameba/ameba
+
+crystal: ">= 1.14.0"
+
+license: MIT
