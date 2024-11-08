@@ -12,11 +12,39 @@ module Crul
     property! parser : OptionParser?
     property method : Crul::Methods = Methods::GET
     property format : Crul::Formats = Crul::Formats::Auto
-    property basic_auth : Tuple(String, String)?
     property headers : HTTP::Headers = HTTP::Headers.new
     property cookie_store : Crul::CookieStore = CookieStore.new
+    property basic_auth : Tuple(String, String)?
     property body : String?
     property errors : Array(Exception) = [] of Exception
+    property? help : Bool = false
+    property? version : Bool = false
+
+    USAGE = <<-USAGE
+      Usage: crul [method] URL [options]
+
+      HTTP methods (default: GET):
+        get, GET                         Use GET
+        post, POST                       Use POST
+        put, PUT                         Use PUT
+        delete, DELETE                   Use DELETE
+
+      HTTP options:
+        -d DATA, --data DATA             Request body
+        -d @file, --data @file           Request body (read from file)
+        -H HEADER, --header HEADER       Set header
+        -a USER:PASS, --auth USER:PASS   Basic auth
+        -c FILE, --cookies FILE          Use FILE as cookie store (reads and writes)
+
+      Response formats (default: autodetect):
+        -j, --json                       Format response as JSON
+        -x, --xml                        Format response as XML
+        -p, --plain                      Format response as plain text
+
+      Other options:
+        -h, --help                       Show this help
+        -V, --version                    Display version
+    USAGE
 
     private def self.configure_parser(args : Array(String), options : Options) : OptionParser
       OptionParser.parse(args: args) do |parser|
@@ -26,6 +54,14 @@ module Crul
         define_header_option(parser, options)
         define_auth_option(parser, options)
         define_cookie_option(parser, options)
+        parser.separator
+        parser.separator "Other options:"
+        parser.on("-h", "--help", "Show this help") do
+          options.help = true
+        end
+        parser.on("-V", "--version", "Display version") do
+          options.version = true
+        end
       end
     end
 
