@@ -1,5 +1,4 @@
 require "json"
-require "http"
 
 module Crul
   class CookieStore
@@ -14,30 +13,30 @@ module Crul
 
       return unless File.exists?(filename)
 
-      @cookies = Cookies.from_json(string_or_io: File.read(filename))
+      @cookies = Cookies.from_json(File.read(filename))
     end
 
-    def add_to_headers(host : String, port : Int32, headers : HTTP::Headers | Hash(String, String))
-      return unless cookies_for_host = cookies["#{host}:#{port}"]?
-
-      cookies_for_host.each do |_, cookie|
-        headers["Cookie"] = cookie
+    def add_to_headers(host, port, headers)
+      if cookies_for_host = cookies["#{host}:#{port}"]?
+        cookies_for_host.each do |name, cookie|
+          headers["Cookie"] = cookie
+        end
       end
     end
 
-    def store_cookies(host : String, port : Int32, headers : HTTP::Headers | Hash(String, String))
-      return unless cookie_header = headers["Set-Cookie"]?
-
-      cookies["#{host}:#{port}"] ||= {} of String => String
-      cookies["#{host}:#{port}"][cookie_name(cookie_header)] = cookie_header
+    def store_cookies(host, port, headers)
+      if cookie_header = headers["Set-Cookie"]?
+        cookies["#{host}:#{port}"] ||= {} of String => String
+        cookies["#{host}:#{port}"][cookie_name(cookie_header)] = cookie_header
+      end
     end
 
     def write!
-      return unless filename = @filename
-
-      json = cookies.to_json
-      Dir.mkdir_p(File.dirname(filename))
-      File.write(filename, json)
+      if filename = @filename
+        json = cookies.to_json
+        Dir.mkdir_p(File.dirname(filename))
+        File.write(filename, json)
+      end
     end
 
     private def cookie_name(cookie_header)
