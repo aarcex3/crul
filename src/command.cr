@@ -8,7 +8,7 @@ module Crul
     @port : Int32
 
     def initialize(@output : IO, @options : Options)
-      @host = @options.url.host.not_nil!
+      @host = @options.url.host.not_nil! # ameba:disable Lint/NotNil
       @port = @options.url.port || default_port
     end
 
@@ -25,7 +25,7 @@ module Crul
       end
     end
 
-    private def connect
+    private def connect(&)
       HTTP::Client.new(@host, @port, @options.url.scheme == "https") do |client|
         if basic_auth = @options.basic_auth
           client.basic_auth(*basic_auth)
@@ -45,11 +45,11 @@ module Crul
     private def print_response(response)
       Colorize.with.light_blue.surround(@output) { |io| io << response.version }
       Colorize.with.cyan.surround(@output) { |io| io << " #{response.status_code} " }
-      Colorize.with.yellow.surround(@output) { |io| io.puts response.status_message }
+      Colorize.with.yellow.surround(@output, &.puts(response.status_message))
       response.headers.each do |name, values|
         values.each do |value|
           @output << "#{name}: "
-          Colorize.with.cyan.surround(@output) { |io| io.puts value }
+          Colorize.with.cyan.surround(@output, &.puts(value))
         end
       end
       @output.puts

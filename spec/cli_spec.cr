@@ -3,7 +3,7 @@ require "./spec_helper"
 describe Crul::CLI do
   it "raises when no args" do
     expect_raises(ArgumentError) do
-      lines = capture_lines do |output|
+      lines = capture_lines do |output| # ameba:disable Lint/UselessAssign
         Crul::CLI.run!([] of String, output)
       end
     end

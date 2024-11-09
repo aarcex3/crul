@@ -111,9 +111,7 @@ module Crul
       new.tap do |options|
         options.method = extract_method(args: args)
 
-        if args.empty?
-          raise ArgumentError.new("URL is required")
-        end
+        raise ArgumentError.new("URL is required") if args.empty?
 
         options.url = parse_url(raw_url: args.first)
         options.parser = configure_parser(args: args, options: options)
@@ -122,7 +120,8 @@ module Crul
 
     private def self.parse_url(raw_url : String) : URI
       uri = URI.parse(raw_url: raw_url)
-      uri.host.nil? ? URI.parse(raw_url: "http://#{raw_url}") : uri
+      uri = uri.host.nil? ? URI.parse(raw_url: "http://#{raw_url}") : uri
+      uri
     end
 
     private def self.load_body_from_file(filename : String, options : Options) : String?
