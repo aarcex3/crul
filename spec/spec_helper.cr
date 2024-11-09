@@ -1,5 +1,6 @@
 require "spec"
 require "../src/crul.cr"
+require "webmock"
 
 struct FakeResponse
   getter :body, :headers
@@ -41,4 +42,8 @@ def capture_lines(uncolorize? = true, &)
   string = output.to_s
   string = uncolorize(string) if uncolorize?
   string.strip.split("\n")
+end
+
+Spec.before_each do
+  WebMock.reset
 end
