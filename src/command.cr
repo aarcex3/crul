@@ -1,5 +1,6 @@
 require "colorize"
 require "http/client"
+require "http/request"
 require "./options.cr"
 
 module Crul
@@ -16,8 +17,14 @@ module Crul
       connect do |client|
         @options.cookie_store.add_to_headers(@host, @port, @options.headers)
 
-        response = client.exec(@options.method.to_s, @options.url.path, @options.headers, @options.body)
+        request = HTTP::Request.new(
+          method: @options.method.to_s,
+          resource: @options.url.to_s,
+          headers: @options.headers,
+          body: @options.body
+        )
 
+        response = client.exec(request: request)
         print_response response
 
         @options.cookie_store.store_cookies(@host, @port, response.headers)

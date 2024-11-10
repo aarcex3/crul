@@ -105,5 +105,10 @@ describe Crul::Options do
       options.cookie_store.should be_a(Crul::CookieStore)
       options.cookie_store.filename.should eq("/tmp/cookies.json")
     end
+
+    it "handles query data" do
+      options = Crul::Options.parse(args: "GET http://example.org?a=1&b=2".split(" "))
+      options.url.query_params.should eq(URI::Params{"a" => ["1"], "b" => ["2"]})
+    end
   end
 end

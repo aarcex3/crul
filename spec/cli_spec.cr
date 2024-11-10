@@ -106,6 +106,7 @@ describe Crul::CLI do
     lines.first.should eq("HTTP/1.1 200 OK")
     lines.last.should eq("Hello")
   end
+
   describe "Integration" do
     describe "Basic auth" do
       it "sends the basic auth data" do
@@ -161,6 +162,18 @@ describe Crul::CLI do
         lines.last.should eq("World")
       end
 
+      it "sends query data" do
+        WebMock.stub(:get, "www.example.com")
+          .with(query: {"page" => "1", "count" => "10"}).to_return(body: "{\"page\" => \"1\", \"count\" => \"10\"}")
+
+        lines = capture_lines do |output|
+          Crul::CLI.run!(["http://www.example.com?count=10&page=1"], output).should be_true
+        end
+
+        lines.first.should eq("HTTP/1.1 200 OK")
+        lines.last.should eq("{\"page\" => \"1\", \"count\" => \"10\"}")
+      end
+
       it "sends the data from a file" do
         WebMock.stub(:post, "http://example.org/data")
           .with(body: File.read(__FILE__))
@@ -174,6 +187,7 @@ describe Crul::CLI do
         lines.last.should eq("World")
       end
     end
+
     describe "Sending headers" do
       it "sends the headers" do
         WebMock.stub(:get, "http://example.org/headers")

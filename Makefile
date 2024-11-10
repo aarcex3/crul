@@ -1,8 +1,8 @@
 # Path to the main source file
-SRC := ./src/crul.cr
+SRC := ./src/main.cr
 TARGET := ./bin/crul.cr
 # Default target to run tests, lint checks, and formatting
-check-all: format check-lint test
+check-all: format lint test
 
 # Run tests
 test:
@@ -24,7 +24,7 @@ build:
 all: crul
 
 # Build the crul project, install dependencies, and link with static libraries
-crul: src/crul.cr 
+crul: src/main.cr 
 	shards
 	crystal build $(SRC) -o $(TARGET) -p -t --release 
 	@strip crul
