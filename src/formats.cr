@@ -108,7 +108,7 @@ module Crul
           @indent += 1
           i = 0
           @pull.read_array do
-            print ", " if i > 0
+            print ",\n" if i > 0
             print_indent
             read_any
             i += 1
@@ -124,7 +124,7 @@ module Crul
           @indent += 1
           i = 0
           @pull.read_object do |key|
-            print ", " if i > 0
+            print ",\n" if i > 0
             print_indent
             Colorize.with.cyan.surround(@output) { key.to_json(@output) }
             print ": "
@@ -138,7 +138,7 @@ module Crul
         end
 
         def print_indent
-          @indent.times { @output << "  " }
+          @output << "  " * @indent
         end
 
         def print(value)

@@ -7,11 +7,11 @@ require "./methods.cr"
 require "./options.cr"
 
 module Crul
-  VERSION = "0.1.0"
+  VERSION = "0.2.0"
 
-  #   def self.run
-  #     success = Crul::CLI.run!(argv: ARGV, output: STDOUT)
+  def self.run
+    success = Crul::CLI.run!(argv: ARGV, output: STDOUT)
 
-  #     exit success ? 0 : -1
-  #   end
+    exit success ? 0 : -1
+  end
 end

@@ -1,5 +1,5 @@
 require "spec"
-require "../src/crul.cr"
+require "../src/main.cr"
 require "webmock"
 
 struct FakeResponse
