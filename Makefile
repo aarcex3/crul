@@ -1,6 +1,7 @@
 # Path to the main source file
-SRC := ./src/main.cr
-TARGET := ./bin/crul.cr
+SRC := ./src/crul.cr
+TARGET := ./bin/crul
+
 # Default target to run tests, lint checks, and formatting
 check-all: format lint test
 
@@ -24,13 +25,14 @@ build:
 all: crul
 
 # Build the crul project, install dependencies, and link with static libraries
-crul: src/main.cr 
+crul: $(SRC)
 	shards
-	crystal build $(SRC) -o $(TARGET) -p -t --release 
-	@strip crul
-	@du -sh crul
+	crystal build $(SRC) -o $(TARGET) -p -t --release
+	@echo "Binary built at: $(TARGET)"
+	@ls -l $(TARGET)  # Verify if the binary exists before strip
+	@strip $(TARGET)
+	@du -sh $(TARGET)
 
-# Clean up build artifacts
 clean:
-	rm -rf .crystal crul .deps .shards libs
+	rm -rf .crystal $(TARGET) $(TARGET).cr .deps .shards libs
 
