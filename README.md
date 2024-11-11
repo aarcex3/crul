@@ -96,6 +96,11 @@ TODO: Write installation instructions here
 
 TODO: Write development instructions here
 
+## Roadmap
+
+- Continue from where the original repo left off
+- Implement new features
+
 ## Contributing
 
 1. Fork it (<https://github.com/your-github-user/crul/fork>)
