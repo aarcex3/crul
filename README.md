@@ -112,4 +112,4 @@ TODO: Write development instructions here
 ## Contributors
 
 - [Sergio Gil](https://github.com/porras) - author
-- [Agustin Arce](https://github.com/your-github-user) - maintainer
+- [Agustin Arce](https://github.com/aarcex3) - maintainer
